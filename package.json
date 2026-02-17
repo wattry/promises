@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "files": [
+    "index.js",
+    "src"
+  ],
   "exports": {
     ".": "./index.js",
     "./batch": "./src/batch.js",
