@@ -3,15 +3,29 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "types": "types/index.d.ts",
   "files": [
     "index.js",
-    "src"
+    "src",
+    "types"
   ],
   "exports": {
-    ".": "./index.js",
-    "./batch": "./src/batch.js",
-    "./batch-all": "./src/batch-all.js",
-    "./batch-all-settled": "./src/batch-all-settled.js"
+    ".": {
+      "types": "./types/index.d.ts",
+      "default": "./index.js"
+    },
+    "./batch": {
+      "types": "./types/batch.d.ts",
+      "default": "./src/batch.js"
+    },
+    "./batch-all": {
+      "types": "./types/batch-all.d.ts",
+      "default": "./src/batch-all.js"
+    },
+    "./batch-all-settled": {
+      "types": "./types/batch-all-settled.d.ts",
+      "default": "./src/batch-all-settled.js"
+    }
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
