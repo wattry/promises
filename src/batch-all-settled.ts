@@ -4,8 +4,10 @@
  */
 import { Batch } from './batch.js';
 
-export class BatchSettle extends Batch {
-  constructor(taskType = 'api', options) {
+import type { Task, TaskType, BatchOptions } from './batch.js';
+
+export class BatchSettle<T> extends Batch<T> {
+  constructor(taskType: TaskType = 'api', options: BatchOptions) {
     super(taskType, options);
   }
 
@@ -16,17 +18,9 @@ export class BatchSettle extends Batch {
    * Make sure you either handle the errors in a wrapper function.
    */
   async done() {
-    const hasNext = this.promises.length > this.concurrency;
-    const count = hasNext ? this.concurrency : this.promises.length;
-    const next = this.promises.splice(0, count);
+    const { next, hasNext } = this.next();
 
-    if (this.debug) {
-      console.debug('Processing batch:', count, 'remaining:', this.promises.length);
-    }
-    const items = await Promise.allSettled(next);
-    if (this.debug) {
-      console.debug('Processed batch:', count, 'remaining:', this.promises.length);
-    }
+    const items = await Promise.allSettled(next.map((task: Task<T>) => task()));
 
     for (const item of items) {
       if (item.status === 'fulfilled') {
@@ -38,14 +32,15 @@ export class BatchSettle extends Batch {
 
     if (hasNext) {
       if (this.debug) {
-        console.debug('Starting next batch', 'remaining:', this.promises.length);
+        console.debug('Starting next batch', 'remaining:', this.size);
       }
+
+      // Recursively call the done function to empty the promises
       await this.done();
+
       if (this.debug) {
-        console.debug('Next batch complete', 'remaining:', this.promises.length);
+        console.debug('Next batch complete', 'remaining:', this.size);
       }
     }
-
-    return;
   }
 }

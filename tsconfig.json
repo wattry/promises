@@ -1,0 +1,21 @@
+{
+  "extends": "@wattry/tsconfig/base",
+  "include": [
+    "src",
+    "types",
+    "tests",
+    "mocks",
+    "__tests__",
+    "__mocks__"
+  ],
+  "exclude": [
+    "dist",
+    "node_modules"
+  ],
+  "compilerOptions": {
+    "typeRoots": [
+      "./types",
+      "./node_modules/@types"
+    ]
+  }
+}

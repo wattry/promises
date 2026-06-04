@@ -28,11 +28,38 @@
     }
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "vitest . --passWithNoTests",
+    "build": "pnpm clean && pnpm tsc --project ./tsconfig.build.json",
+    "build:pack": "pnpm build && pnpm pack",
+    "clean": "rm -rf dist",
+    "dev": "tsx watch --include './src/**/*.ts' ./src/index.ts",
+    "lint": "eslint  --config ./eslint.config.js --no-warn-ignored src/**/*.ts",
+    "lint:config": "pnpx @eslint/config-inspector@latest --config ./eslint.config.js",
+    "lint:fix": "eslint  --config ./eslint.config.js --fix --no-warn-ignored src/**/*.ts",
+    "prepare": "pnpm run build",
+    "test:ci": "vitest . --silent --collectCoverage --coverageDirectory='./coverage' --ci --reporters=default --reporters=junit --watchAll=false --passWithNoTests",
+    "test:watch": "vitest . --passWithNoTests --watch",
+    "typecheck": "tsc --noEmit --project ./tsconfig.json",
+    "upgrade:all": "pnpm update --latest"
   },
   "keywords": [],
-  "author": "",
+  "author": "wattry",
   "license": "ISC",
   "packageManager": "pnpm@10.29.3",
-  "type": "module"
+  "type": "module",
+  "devDependencies": {
+    "@eslint/config-inspector": "3.0.4",
+    "@stylistic/eslint-plugin": "5.10.0",
+    "@types/node": "24.12.4",
+    "@wattry/tsconfig": "file:/Users/wattry/Documents/workspace/tsconfig/wattry-tsconfig-0.3.0.tgz",
+    "dotenv": "17.4.2",
+    "dotenv-expand": "13.0.0",
+    "eslint": "10.4.1",
+    "globals": "17.6.0",
+    "husky": "9.1.7",
+    "tsx": "4.22.4",
+    "typescript": "6.0.3",
+    "typescript-eslint": "8.60.1",
+    "vitest": "4.1.8"
+  }
 }
