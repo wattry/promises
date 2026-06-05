@@ -6,7 +6,9 @@
     "tests",
     "mocks",
     "__tests__",
-    "__mocks__"
+    "__mocks__",
+    "vitest.config.ts",
+    "eslint.config.ts"
   ],
   "exclude": [
     "dist",
@@ -16,6 +18,7 @@
     "typeRoots": [
       "./types",
       "./node_modules/@types"
-    ]
+    ],
+    "rootDir": "."
   }
 }

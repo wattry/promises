@@ -13,10 +13,7 @@ export type TaskType = 'api' | 'db' | 'cpu';
  * Options for Batch constructor
  */
 export interface BatchOptions {
-  /**
-   * Enable debug logging
-   * @default false
-   */
+  /** Enable debug logging */
   debug?: boolean;
 }
 
@@ -27,7 +24,7 @@ export type Task<T> = () => Promise<T>;
  */
 export class Batch<T> {
   /** Holds the size of each batch */
-  #concurrency: number;
+  #concurrency: number = os.availableParallelism();
   /** Default multiplier   */
   #multiplier: number = 2;
   /** Stores the promise array to be spliced and processed */
@@ -54,18 +51,7 @@ export class Batch<T> {
     }
 
     // Use the system to calculate the available concurrency
-    const cpu = os.cpus();
-    const total = os.totalmem();
-    const free = os.freemem();
-
-    const cpuCap = cpu.length * this.#multiplier;
-    const memCap = Math.round(cpu.length * this.#multiplier * (free / total));
-
-    this.#concurrency = Math.max(1, Math.min(cpuCap, memCap || 1));
-
-    if (this.#debug) {
-      console.debug('Calculated concurrency:', this.#concurrency);
-    }
+    this.#setConcurrency();
   }
 
   /**
@@ -103,6 +89,14 @@ export class Batch<T> {
     return this.#debug;
   }
 
+  #setConcurrency() {
+    this.#concurrency = os.availableParallelism() * this.#multiplier;
+
+    if (this.#debug) {
+      console.debug('Calculated concurrency:', this.#concurrency);
+    }
+  }
+
   hasErrors() {
     return this.#errors.length > 0;
   }
@@ -124,6 +118,8 @@ export class Batch<T> {
    * @param next gets the next batch based on the size
    */
   #next(): { hasNext: boolean, next: Task<T>[] } {
+    this.#setConcurrency();
+
     const hasNext = this.size > this.concurrency;
     const count = hasNext ? this.concurrency : this.size;
     const next = this.#tasks.splice(0, count);
@@ -158,6 +154,7 @@ export class Batch<T> {
       this.#errors.push(error as Error);
     } finally {
       // Recursively call the done function to empty the promises
+
       if (this.size > 0) {
         if (this.debug) {
           console.debug('Starting next batch', 'remaining:', this.size);
@@ -196,10 +193,12 @@ export class Batch<T> {
       }
 
       // Recursively call the done function to empty the promises
-      await this.settleAll();
+      if (this.size > 0) {
+        if (this.debug) {
+          console.debug('Next batch complete', 'remaining:', this.size);
+        }
 
-      if (this.debug) {
-        console.debug('Next batch complete', 'remaining:', this.size);
+        await this.settleAll();
       }
     }
   }
