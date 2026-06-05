@@ -1,0 +1,4 @@
+allowBuilds:
+  esbuild: true
+minimumReleaseAgeExclude:
+  - '@wattry/tsconfig@0.4.2'
