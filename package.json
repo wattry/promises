@@ -1,62 +1,63 @@
 {
-  "name": "promises",
-  "version": "1.0.0",
-  "description": "",
+  "name": "@wattry/promises",
+  "version": "0.0.0",
+  "description": "A nodejs package that handles the concurrent running of promises in managed batches.",
+  "type": "module",
   "main": "index.js",
   "types": "types/index.d.ts",
   "files": [
-    "index.js",
+    " dist",
     "src",
     "types"
   ],
   "exports": {
     ".": {
-      "types": "./types/index.d.ts",
-      "default": "./index.js"
-    },
-    "./batch": {
-      "types": "./types/batch.d.ts",
-      "default": "./src/batch.js"
-    },
-    "./batch-all": {
-      "types": "./types/batch-all.d.ts",
-      "default": "./src/batch-all.js"
-    },
-    "./batch-all-settled": {
-      "types": "./types/batch-all-settled.d.ts",
-      "default": "./src/batch-all-settled.js"
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
     }
   },
   "scripts": {
     "test": "vitest . --passWithNoTests",
     "build": "pnpm clean && pnpm tsc --project ./tsconfig.build.json",
-    "build:pack": "pnpm build && pnpm pack",
+    "build:pack": "pnpm build && pnpm pack && pnpm clean",
     "clean": "rm -rf dist",
     "dev": "tsx watch --include './src/**/*.ts' ./src/index.ts",
-    "lint": "eslint  --config ./eslint.config.js --no-warn-ignored src/**/*.ts",
-    "lint:config": "pnpx @eslint/config-inspector@latest --config ./eslint.config.js",
-    "lint:fix": "eslint  --config ./eslint.config.js --fix --no-warn-ignored src/**/*.ts",
+    "lint": "eslint  --config ./eslint.config.ts --no-warn-ignored src/**/*.ts",
+    "lint:config": "pnpx @eslint/config-inspector@latest --config ./eslint.config.ts",
+    "lint:fix": "eslint  --config ./eslint.config.ts --fix --no-warn-ignored src/**/*.ts",
     "prepare": "pnpm run build",
     "test:ci": "vitest . --silent --collectCoverage --coverageDirectory='./coverage' --ci --reporters=default --reporters=junit --watchAll=false --passWithNoTests",
     "test:watch": "vitest . --passWithNoTests --watch",
     "typecheck": "tsc --noEmit --project ./tsconfig.json",
     "upgrade:all": "pnpm update --latest"
   },
-  "keywords": [],
+  "keywords": ["nodejs", "promises", "concurrency"],
+  "devEngines": {
+    "runtime": {
+      "name": "node",
+      "version": "24.16.0",
+      "onFail": "warn"
+    },
+    "packageManager": {
+      "name": "pnpm",
+      "version": "11.3.0",
+      "onFail": "warn"
+    }
+  },
   "author": "wattry",
-  "license": "ISC",
-  "packageManager": "pnpm@10.29.3",
-  "type": "module",
+  "license": "MIT",
   "devDependencies": {
+    "@eslint/config-helpers": "0.6.0",
     "@eslint/config-inspector": "3.0.4",
     "@stylistic/eslint-plugin": "5.10.0",
     "@types/node": "24.12.4",
-    "@wattry/tsconfig": "file:/Users/wattry/Documents/workspace/tsconfig/wattry-tsconfig-0.3.0.tgz",
+    "@wattry/tsconfig": "0.4.2",
     "dotenv": "17.4.2",
     "dotenv-expand": "13.0.0",
     "eslint": "10.4.1",
     "globals": "17.6.0",
     "husky": "9.1.7",
+    "jiti": "^2.7.0",
     "tsx": "4.22.4",
     "typescript": "6.0.3",
     "typescript-eslint": "8.60.1",
