@@ -1,6 +1,6 @@
 {
   "name": "@wattry/promises",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "A nodejs package that handles the concurrent running of promises in managed batches.",
   "type": "module",
   "packageManager": "pnpm@11.3.0",
@@ -32,7 +32,11 @@
     "typecheck": "tsc --noEmit --project ./tsconfig.json",
     "upgrade:all": "pnpm update --latest"
   },
-  "keywords": ["nodejs", "promises", "concurrency"],
+  "keywords": [
+    "nodejs",
+    "promises",
+    "concurrency"
+  ],
   "devEngines": {
     "runtime": {
       "name": "node",
