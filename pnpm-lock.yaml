@@ -220,8 +220,8 @@ importers:
         specifier: 24.12.4
         version: 24.12.4
       '@wattry/tsconfig':
-        specifier: 0.4.2
-        version: 0.4.2
+        specifier: 0.4.3
+        version: 0.4.3
       dotenv:
         specifier: 17.4.2
         version: 17.4.2
@@ -853,8 +853,8 @@ packages:
   '@vitest/utils@4.1.8':
     resolution: {integrity: sha512-uOJamYALNhfJ6iolExyQM40yIQwDqYnkKtQ5VCiSe17E33H0aQ/u+1GlRuz4LZBk6Mm3sg90G9hEbmEt37C1Zg==}
 
-  '@wattry/tsconfig@0.4.2':
-    resolution: {integrity: sha512-td9HqNBm+o8+Des6uq2G9WXvKuhDLSz2qmTAXtE0kpwcfc7nIvfL8wit8fhpi9/sH9rXNFRsKhkfpjl+GmRodw==, tarball: https://npm.pkg.github.com/download/@wattry/tsconfig/0.4.2/2ed6bc412d5a989ad0d43fa0a680ba3b1e09d584}
+  '@wattry/tsconfig@0.4.3':
+    resolution: {integrity: sha512-dFgPq9KHyOoEI1PXBj95AkRXLXQGs1zxzlm5ZCOCxlScxS1zr9JHPBc41OkWqrVarEOa4fBwBgV8vgYEu/ysoQ==, tarball: https://npm.pkg.github.com/download/@wattry/tsconfig/0.4.3/9a4231c3ecf1a736d7927ffab12b3f0b67acce2e}
     hasBin: true
 
   acorn-jsx@5.3.2:
@@ -1966,7 +1966,7 @@ snapshots:
       convert-source-map: 2.0.0
       tinyrainbow: 3.1.0
 
-  '@wattry/tsconfig@0.4.2':
+  '@wattry/tsconfig@0.4.3':
     dependencies:
       commander: 15.0.0
 
