@@ -17,8 +17,8 @@ jobs:
         with:
           node-version: 24
           registry-url: https://npm.pkg.github.com/
-      # TODO(human): enable corepack here so `pnpm` resolves to the pinned
-      # packageManager version (pnpm@11.3.0) from package.json
+      - name: Enable corepack
+        run: corepack enable
       - run: pnpm install --frozen-lockfile
       - run: pnpm build
       - name: publish
