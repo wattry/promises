@@ -1,12 +1,7 @@
-name: "[Manual] release"
+name: "[Manual] Release"
 
 on:
   workflow_dispatch:
-    inputs:
-      ENVIRONMENT:
-        description: "Target tenant environment"
-        type: choice
-        options: [dev, stage, prod]
 
 permissions:
   contents: write
