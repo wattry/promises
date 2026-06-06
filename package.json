@@ -6,6 +6,8 @@
   "packageManager": "pnpm@11.3.0",
   "main": "index.js",
   "types": "types/index.d.ts",
+  "private": "false",
+  "repository": "https://github.com/wattry/promises",
   "files": [
     " dist",
     "src",
@@ -56,7 +58,7 @@
     "@eslint/config-inspector": "3.0.4",
     "@stylistic/eslint-plugin": "5.10.0",
     "@types/node": "24.12.4",
-    "@wattry/tsconfig": "0.4.2",
+    "@wattry/tsconfig": "0.4.3",
     "dotenv": "17.4.2",
     "dotenv-expand": "13.0.0",
     "eslint": "10.4.1",
