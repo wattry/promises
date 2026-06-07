@@ -6,7 +6,6 @@
   "packageManager": "pnpm@11.3.0",
   "main": "index.js",
   "types": "types/index.d.ts",
-  "private": "false",
   "repository": "https://github.com/wattry/promises",
   "files": [
     " dist",
