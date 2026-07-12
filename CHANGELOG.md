@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.1](https://github.com/wattry/promises/compare/promises-v0.1.0...promises-v0.1.1) (2026-07-12)
+
+
+### Bug Fixes
+
+* change package ([0aee37c](https://github.com/wattry/promises/commit/0aee37cc5d340dffdbb31392aa46bd0a1e188224))
+* change package ([b60002d](https://github.com/wattry/promises/commit/b60002defdf74129aa41873fc0a48ac4057b6401))
+
 ## [0.1.0](https://github.com/wattry/promises/compare/promises-v0.0.1...promises-v0.1.0) (2026-07-12)
 
 
