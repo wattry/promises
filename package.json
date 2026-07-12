@@ -8,9 +8,7 @@
   "types": "types/index.d.ts",
   "repository": "https://github.com/wattry/promises",
   "files": [
-    " dist",
-    "src",
-    "types"
+    "dist"
   ],
   "exports": {
     ".": {
