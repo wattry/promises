@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.2](https://github.com/wattry/promises/compare/promises-v0.1.1...promises-v0.1.2) (2026-07-13)
+
+
+### Bug Fixes
+
+* main entry point ([00f9879](https://github.com/wattry/promises/commit/00f987974ea89e1ec1d79f4a882f79bef499037e))
+* main entry point ([35e843c](https://github.com/wattry/promises/commit/35e843cf3a2c1fe8658f07a777343b11f037d5fc))
+
 ## [0.1.1](https://github.com/wattry/promises/compare/promises-v0.1.0...promises-v0.1.1) (2026-07-12)
 
 
