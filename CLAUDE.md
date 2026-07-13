@@ -52,7 +52,7 @@ Tests are not yet written. Vitest only discovers them under `__tests__/**` or `t
 
 - ES modules (`"type": "module"`). `tsconfig.json` extends `@wattry/tsconfig/base`; `tsconfig.build.json` narrows to `src` → `dist/`.
 - `.ts.config.json` is the `@wattry/tsconfig` snapshot manifest (it regenerates `eslint.config.ts` / `vitest.config.ts` from upstream); treat those generated configs as managed by that tool.
-- Releases run through **release-please** (`release-please-config.json`, `.release-please-manifest.json`) and GitHub Actions in `.github/workflows/` (`pr`, `publish`, `release`, `stackit`). Conventional Commits drive versioning.
+- Releases run through **release-please** (`release-please-config.json`, `.release-please-manifest.json`) and GitHub Actions in `.github/workflows/` (`pr`, `publish`, `release`). Conventional Commits drive versioning.
 
 ### Known discrepancy (verify before publishing)
 
