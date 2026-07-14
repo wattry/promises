@@ -1,15 +1,4 @@
 /**
- * An implementation of Promise.all to limit the number of promises that will be executed
- * at the same time to prevent ratelimiting and large volumes of requests
- */
-import os from 'node:os';
-
-/**
- * Task type for concurrency calculation
- */
-export type TaskType = 'api' | 'db' | 'cpu';
-
-/**
  * Options for Batch constructor
  */
 export interface BatchOptions {
@@ -17,18 +6,32 @@ export interface BatchOptions {
   debug?: boolean;
 }
 
-export type Task<T> = () => Promise<T>;
+export interface SettleOptions {
+  /** 
+   * Sets the behavior of the first error in the task queue when calling the settle method.
+   * Default: true
+   */
+  failFast: boolean
+}
+
+export type TaskArguments = unknown[];
+
+export type TaskHandler<T, A extends TaskArguments = TaskArguments> = (...args: A) => Promise<T>;
+export type Task<T, A extends TaskArguments = TaskArguments> = {
+  promiseFn: TaskHandler<T, A>;
+  args: A;
+};
 
 /**
  * Base class that manages promise batching with dynamic concurrency control
  */
-export class Batch<T> {
+export class Batch<T, A extends TaskArguments = TaskArguments> {
   /** Holds the size of each batch */
-  #concurrency: number = os.availableParallelism();
+  #concurrency: number = navigator.hardwareConcurrency;
   /** Default multiplier   */
   #multiplier: number = 2;
   /** Stores the promise array to be spliced and processed */
-  #tasks: Task<T>[] = [];
+  #tasks: Task<T, A>[] = [];
   /** Stores the resolved promises */
   #results: T[] = [];
   /** Stores errors from settling the promises */
@@ -41,12 +44,9 @@ export class Batch<T> {
    * @param taskType - Type of task ('api', 'db', or 'cpu')
    * @param options - Configuration options
    */
-  constructor(taskType: TaskType = 'api', options: BatchOptions = { debug: false }) {
-    if (taskType === 'api' || taskType === 'db') {
-      this.#multiplier = 4;
-    }
-
+  constructor(options: BatchOptions = { debug: false }) {
     if (options.debug) {
+      console.info('Debug mode ON: Ensure you have set your console level to verbose')
       this.#debug = true;
     }
 
@@ -90,10 +90,11 @@ export class Batch<T> {
   }
 
   #setConcurrency() {
-    this.#concurrency = os.availableParallelism() * this.#multiplier;
+    console.debug('Hardware concurrency:', navigator.hardwareConcurrency);
+    this.#concurrency = navigator.hardwareConcurrency * this.#multiplier;
 
     if (this.#debug) {
-      console.debug('Calculated concurrency:', this.#concurrency);
+      console.debug('Calculated new concurrency:', this.#concurrency);
     }
   }
 
@@ -104,10 +105,11 @@ export class Batch<T> {
   /**
    * Add a promise to the batch queue
    * @param promiseFn - A callback that returns the work to be processed
+   * @param args - Arguments to pass to the promiseFn handler.
    */
-  add(promiseFn: Task<T>) {
+  add(promiseFn: TaskHandler<T, A>, args?: A): void {
     if (typeof promiseFn === 'function') {
-      this.#tasks.push(promiseFn);
+      this.#tasks.push({ promiseFn, args: args ?? ([] as unknown as A) });
     } else {
       throw new ReferenceError('promiseFn must be a callback');
     }
@@ -117,14 +119,14 @@ export class Batch<T> {
    * Calculate the next batch
    * @param next gets the next batch based on the size
    */
-  #next(): { hasNext: boolean, next: Task<T>[] } {
+  #next(): { hasNext: boolean, next: Task<T, A>[] } {
     this.#setConcurrency();
 
     const hasNext = this.size > this.concurrency;
     const count = hasNext ? this.concurrency : this.size;
     const next = this.#tasks.splice(0, count);
 
-    if (this.debug) {
+    if (this.#debug) {
       console.debug('Processing batch:', count, 'remaining:', this.size);
     }
 
@@ -136,13 +138,13 @@ export class Batch<T> {
    * Results will be stored in the instance .results for processing.
    * Errors the done must be handled in a try/catch block unlike with the BatchSettle.
    */
-  async settle() {
+  async settle(options: SettleOptions = { failFast: true }) {
     try {
       const { next } = this.#next();
       // Converts all the callbacks for the batch into running promises
-      const items: T[] = await Promise.all(next.map((task: Task<T>) => task()));
+      const items: T[] = await Promise.all(next.map(({ promiseFn, args }: Task<T, A>) => promiseFn(...args)));
 
-      if (this.debug) {
+      if (this.#debug) {
         console.debug('Processed batch', 'remaining:', this.size);
       }
 
@@ -151,18 +153,24 @@ export class Batch<T> {
       }
 
     } catch (error) {
+      if (this.#debug) {
+        console.error('An error occurred in batch', this.size);
+      }
+      this.cancel();
       this.#errors.push(error as Error);
+
+      throw error;
     } finally {
       // Recursively call the done function to empty the promises
 
       if (this.size > 0) {
-        if (this.debug) {
+        if (this.#debug) {
           console.debug('Starting next batch', 'remaining:', this.size);
         }
 
-        await this.settle();
+        await this.settle(options);
 
-        if (this.debug) {
+        if (this.#debug) {
           console.debug('Next batch complete', 'remaining:', this.size);
         }
       }
@@ -177,24 +185,27 @@ export class Batch<T> {
    */
   async settleAll() {
     const { next, hasNext } = this.#next();
-    const items = await Promise.allSettled(next.map((task: Task<T>) => task()));
+    const items = await Promise.allSettled(next.map(({ promiseFn, args }: Task<T, A>) => promiseFn(...args)));
 
     for (const item of items) {
       if (item.status === 'fulfilled') {
         this.#results.push(item.value);
       } else {
+        if (this.#debug) {
+          console.error('An error occurred in batch', this.size);
+        }
         this.#errors.push(item.reason);
       }
     }
 
     if (hasNext) {
-      if (this.debug) {
+      if (this.#debug) {
         console.debug('Starting next batch', 'remaining:', this.size);
       }
 
       // Recursively call the done function to empty the promises
       if (this.size > 0) {
-        if (this.debug) {
+        if (this.#debug) {
           console.debug('Next batch complete', 'remaining:', this.size);
         }
 
