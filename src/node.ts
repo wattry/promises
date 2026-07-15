@@ -17,7 +17,21 @@ export interface BatchOptions {
   debug?: boolean;
 }
 
-export type Task<T> = () => Promise<T>;
+export interface SettleOptions {
+  /**
+   * Sets the behavior of the first error in the task queue when calling the settle method.
+   * Default: true
+   */
+  failFast: boolean
+}
+
+export type TaskArguments = unknown[];
+
+export type TaskHandler<T, A extends TaskArguments = TaskArguments> = (...args: A) => Promise<T>;
+export type Task<T, A extends TaskArguments = TaskArguments> = {
+  promiseFn: TaskHandler<T, A>;
+  args: A;
+};
 
 /**
  * Base class that manages promise batching with dynamic concurrency control
