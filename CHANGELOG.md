@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.4](https://github.com/wattry/promises/compare/promises-v0.1.3...promises-v0.1.4) (2026-07-15)
+
+
+### Bug Fixes
+
+* call task.promiseFn with args instead of task() ([497ba70](https://github.com/wattry/promises/commit/497ba701c608e08e7f44a9b17a92cedab001b909))
+* call task.promiseFn with args instead of task() ([8e5d330](https://github.com/wattry/promises/commit/8e5d3309978ede13e36cb9e378c6e98a913be2b5))
+
 ## [0.1.3](https://github.com/wattry/promises/compare/promises-v0.1.2...promises-v0.1.3) (2026-07-15)
 
 
