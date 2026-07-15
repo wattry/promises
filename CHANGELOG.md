@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.3](https://github.com/wattry/promises/compare/promises-v0.1.2...promises-v0.1.3) (2026-07-15)
+
+
+### Bug Fixes
+
+* fix ([a0a3ec3](https://github.com/wattry/promises/commit/a0a3ec36ae5cce7f8efa4ee82fe66046e07d5cd9))
+* improve the typing and introduce browser version ([cfd8bcb](https://github.com/wattry/promises/commit/cfd8bcb2e4bbeb2a18dac28b18efe55c26709baa))
+
 ## [0.1.2](https://github.com/wattry/promises/compare/promises-v0.1.1...promises-v0.1.2) (2026-07-13)
 
 
