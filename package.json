@@ -4,16 +4,18 @@
   "description": "A nodejs package that handles the concurrent running of promises in managed batches.",
   "type": "module",
   "packageManager": "pnpm@11.3.0",
-  "main": "./dist/index.js",
-  "types": "./dist/index.js",
   "repository": "https://github.com/wattry/promises",
   "files": [
     "dist"
   ],
   "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "default": "./dist/index.js"
+    "./node": {
+      "types": "./dist/node.d.ts",
+      "default": "./dist/node.js"
+    },
+    "./browser": {
+      "types": "./dist/browser.d.ts",
+      "default": "./dist/browser.js"
     }
   },
   "scripts": {
