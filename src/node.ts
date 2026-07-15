@@ -161,7 +161,7 @@ export class Batch<T> {
     try {
       const { next } = this.#next();
       // Converts all the callbacks for the batch into running promises
-      const items: T[] = await Promise.all(next.map((task: Task<T>) => task()));
+      const items: T[] = await Promise.all(next.map((task: Task<T>) => task.promiseFn(...task.args)));
 
       if (this.debug) {
         console.debug('Processed batch', 'remaining:', this.size);
@@ -198,7 +198,7 @@ export class Batch<T> {
    */
   async settleAll() {
     const { next, hasNext } = this.#next();
-    const items = await Promise.allSettled(next.map((task: Task<T>) => task()));
+    const items = await Promise.allSettled(next.map((task: Task<T>) => task.promiseFn(...task.args)));
 
     for (const item of items) {
       if (item.status === 'fulfilled') {
