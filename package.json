@@ -1,6 +1,6 @@
 {
   "name": "@wattry/promises",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "A nodejs package that handles the concurrent running of promises in managed batches.",
   "type": "module",
   "packageManager": "pnpm@11.3.0",

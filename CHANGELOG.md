@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.5](https://github.com/wattry/promises/compare/promises-v0.1.4...promises-v0.1.5) (2026-07-17)
+
+
+### Bug Fixes
+
+* fix ([765b981](https://github.com/wattry/promises/commit/765b981ddecc33eda0d6e467f89dea0607e2e69c))
+* fix ([ef459af](https://github.com/wattry/promises/commit/ef459afd36764edf16702c2d7b95a17dba080f7a))
+
 ## [0.1.4](https://github.com/wattry/promises/compare/promises-v0.1.3...promises-v0.1.4) (2026-07-15)
 
 
