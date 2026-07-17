@@ -122,3 +122,7 @@ Choose the type that matches your workload for optimal concurrency:
 - `'api'`: HTTP requests and external API calls (high concurrency, 4×)
 - `'db'`: database operations (high concurrency, 4×)
 - `'cpu'`: CPU-intensive work like data processing (lower concurrency, 2×)
+
+### Issues with Lockfile
+
+- Due to the nature of supply chain attacks
